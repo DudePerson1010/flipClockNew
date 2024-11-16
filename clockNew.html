@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Flip Clock (12-Hour)</title>
+  <style>
+    /* Basic styling for flip clock */
+    body {
+      background-color: #222;
+      color: white;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .clock {
+      display: flex;
+      gap: 10px;
+    }
+
+    .clock__segment {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .clock__card {
+      background: #333;
+      color: white;
+      width: 50px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      font-size: 24px;
+    }
+
+    .clock__label {
+      font-size: 12px;
+      color: #999;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="clock" class="clock">
+    <div class="clock__segment">
+      <div id="hours" class="clock__card">00</div>
+      <div class="clock__label">HOURS</div>
+    </div>
+    <div class="clock__segment">
+      <div id="minutes" class="clock__card">00</div>
+      <div class="clock__label">MINUTES</div>
+    </div>
+    <div class="clock__segment">
+      <div id="seconds" class="clock__card">00</div>
+      <div class="clock__label">SECONDS</div>
+    </div>
+    <div class="clock__segment">
+      <div id="ampm" class="clock__card">AM</div>
+      <div class="clock__label"></div>
+    </div>
+  </div>
+
+  <script>
+    // Get clock elements by ID
+    var hoursElement = document.getElementById('hours');
+    var minutesElement = document.getElementById('minutes');
+    var secondsElement = document.getElementById('seconds');
+    var ampmElement = document.getElementById('ampm');
+
+    // Function to update time
+    function updateClock() {
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+
+      // Convert to 12-hour format
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Display "12" for midnight and noon
+
+      // Format time to 2-digit strings
+      hoursElement.innerHTML = (hours < 10 ? '0' : '') + hours;
+      minutesElement.innerHTML = (minutes < 10 ? '0' : '') + minutes;
+      secondsElement.innerHTML = (seconds < 10 ? '0' : '') + seconds;
+      ampmElement.innerHTML = ampm;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+
+    // Initial call to set the clock immediately on load
+    updateClock();
+  </script>
+
+</body>
+</html>
