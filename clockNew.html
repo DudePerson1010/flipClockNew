@@ -3,104 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Flip Clock (12-Hour)</title>
+  <title>Flip Clock with Weather</title>
   <style>
-    /* Basic styling for flip clock */
-    body {
-      background-color: #222;
-      color: white;
-      font-family: 'Courier New', monospace;
+    * {
       margin: 0;
       padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      box-sizing: border-box;
     }
 
-    .clock {
-      display: flex;
-      gap: 10px;
-    }
-
-    .clock__segment {
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+    }
+
+    .container {
+      text-align: center;
+      color: #fff;
+    }
+
+    /* Date display */
+    .date {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      font-family: 'Georgia', serif;
+    }
+
+    /* Flip clock styles */
+    .flip-clock {
+      display: flex;
+      gap: 10px;
+      font-size: 5em; /* Slightly smaller font size */
+      justify-content: center;
       align-items: center;
     }
 
-    .clock__card {
-      background: #333;
-      color: white;
-      width: 50px;
-      height: 60px;
+    .flip {
+      position: relative;
+      background-color: rgba(131, 124, 124, 0.22);
+      padding: 15px;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 100px;
+      height: 130px;
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 5px;
-      font-size: 24px;
     }
 
-    .clock__label {
-      font-size: 12px;
-      color: #999;
-      margin-top: 5px;
+    .flip span {
+      position: absolute;
+      display: block;
+      font-size: 1em;
+      line-height: 1;
+      color: #ffffff;
+      z-index: 2;
+      transform-origin: 50% 50%;
+      transition: transform 0.5s ease-in-out;
     }
+
+    /* Colon style */
+    .colon {
+      font-size: 1.2em;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+    }
+
+    /* Flip animation */
+    .flip-animation {
+      animation: flip 0.5s ease-in-out;
+    }
+
+    @keyframes flip {
+      0% { transform: rotateX(0); }
+      50% { transform: rotateX(+100deg); }
+      100% { transform: rotateX(0); }
+    }
+
+    /* Weather widget adjustments */
+    #weather {
+      margin-top: 50px;
+      font-size: 5em;
+    }
+
+    /* Motivation quote style */
+    .quote {
+      font-size: 1.5em;
+      margin-top: 30px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.8);
+      font-family: 'Courier New', Courier, monospace;
+    }
+
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- Current Date -->
+    <div class="date" id="date"></div>
 
-  <div id="clock" class="clock">
-    <div class="clock__segment">
-      <div id="hours" class="clock__card">00</div>
-      <div class="clock__label">HOURS</div>
+    <!-- Flip clock display -->
+    <div class="flip-clock" id="clock">
+      <div class="flip" id="hours"></div>
+      <div class="colon">:</div>
+      <div class="flip" id="minutes"></div>
+      <div class="colon">:</div>
+      <div class="flip" id="seconds"></div>
     </div>
-    <div class="clock__segment">
-      <div id="minutes" class="clock__card">00</div>
-      <div class="clock__label">MINUTES</div>
-    </div>
-    <div class="clock__segment">
-      <div id="seconds" class="clock__card">00</div>
-      <div class="clock__label">SECONDS</div>
-    </div>
-    <div class="clock__segment">
-      <div id="ampm" class="clock__card">AM</div>
-      <div class="clock__label"></div>
-    </div>
+
+    <!-- Weather widget -->
+    <a class="weatherwidget-io" href="https://forecast7.com/en/40d96n73d81/eastchester/?unit=us" data-label_1="EASTCHESTER" data-label_2="WEATHER" data-font="Verdana" data-icons="Climacons Animated" data-theme="dark">EASTCHESTER WEATHER</a>
+    <script>
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+    </script>
+    
+    <!-- Random motivational quote -->
+    <div class="quote" id="quote"></div>
   </div>
 
   <script>
-    // Get clock elements by ID
-    var hoursElement = document.getElementById('hours');
-    var minutesElement = document.getElementById('minutes');
-    var secondsElement = document.getElementById('seconds');
-    var ampmElement = document.getElementById('ampm');
-
-    // Function to update time
+    // Flip clock display
     function updateClock() {
-      var now = new Date();
-      var hours = now.getHours();
-      var minutes = now.getMinutes();
-      var seconds = now.getSeconds();
-      var ampm = hours >= 12 ? 'PM' : 'AM';
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
 
-      // Convert to 12-hour format
-      hours = hours % 12;
-      hours = hours ? hours : 12; // Display "12" for midnight and noon
+      // Set the values with flip animation
+      setFlipValue(document.getElementById('hours'), hours);
+      setFlipValue(document.getElementById('minutes'), minutes);
+      setFlipValue(document.getElementById('seconds'), seconds);
 
-      // Format time to 2-digit strings
-      hoursElement.innerHTML = (hours < 10 ? '0' : '') + hours;
-      minutesElement.innerHTML = (minutes < 10 ? '0' : '') + minutes;
-      secondsElement.innerHTML = (seconds < 10 ? '0' : '') + seconds;
-      ampmElement.innerHTML = ampm;
+      // Update the date
+      const date = now.toLocaleDateString("en-US", {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      document.getElementById('date').textContent = date;
     }
 
-    // Update the clock every second
-    setInterval(updateClock, 1000);
+    function setFlipValue(element, newValue) {
+      if (element.innerText !== newValue) {
+        element.innerText = newValue;
+        element.classList.add('flip-animation');
+        setTimeout(() => {
+          element.classList.remove('flip-animation');
+        }, 500);
+      }
+    }
 
-    // Initial call to set the clock immediately on load
-    updateClock();
+    // Random motivational quote
+    const quotes = [
+      "The best time to plant a tree was 20 years ago. The second best time is now.",
+      "You are never too old to set another goal or to dream a new dream.",
+      "The future depends on what we do in the present.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "Believe you can and you're halfway there."
+    ];
+    function getRandomQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      document.getElementById('quote').textContent = quotes[randomIndex];
+    }
+
+    // Update clock every 1.5 seconds for a smoother effect
+    setInterval(updateClock, 1500);
+    // Get a random quote
+    getRandomQuote();
   </script>
-
 </body>
 </html>
