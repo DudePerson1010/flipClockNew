@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flip Clock with Weather</title>
+  <title>Simple Digital Clock with Weather</title>
   <style>
     * {
       margin: 0;
@@ -34,8 +34,8 @@
       font-family: 'Georgia', serif;
     }
 
-    /* Flip clock styles */
-    .flip-clock {
+    /* Clock styles */
+    .digital-clock {
       display: flex;
       gap: 10px;
       font-size: 5em; /* Slightly smaller font size */
@@ -43,28 +43,17 @@
       align-items: center;
     }
 
-    .flip {
-      position: relative;
-      background-color: rgba(131, 124, 124, 0.22);
+    .time-unit {
       padding: 15px;
+      background-color: rgba(131, 124, 124, 0.22);
       border-radius: 10px;
-      overflow: hidden;
       width: 100px;
       height: 130px;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .flip span {
-      position: absolute;
-      display: block;
       font-size: 1em;
-      line-height: 1;
       color: #ffffff;
-      z-index: 2;
-      transform-origin: 50% 50%;
-      transition: transform 0.5s ease-in-out;
     }
 
     /* Colon style */
@@ -73,17 +62,6 @@
       color: rgba(255, 255, 255, 0.8);
       display: flex;
       align-items: center;
-    }
-
-    /* Flip animation */
-    .flip-animation {
-      animation: flip 0.5s ease-in-out;
-    }
-
-    @keyframes flip {
-      0% { transform: rotateX(0); }
-      50% { transform: rotateX(+100deg); }
-      100% { transform: rotateX(0); }
     }
 
     /* Weather widget adjustments */
@@ -108,13 +86,13 @@
     <!-- Current Date -->
     <div class="date" id="date"></div>
 
-    <!-- Flip clock display -->
-    <div class="flip-clock" id="clock">
-      <div class="flip" id="hours"></div>
+    <!-- Digital clock display -->
+    <div class="digital-clock" id="clock">
+      <div class="time-unit" id="hours"></div>
       <div class="colon">:</div>
-      <div class="flip" id="minutes"></div>
+      <div class="time-unit" id="minutes"></div>
       <div class="colon">:</div>
-      <div class="flip" id="seconds"></div>
+      <div class="time-unit" id="seconds"></div>
     </div>
 
     <!-- Weather widget -->
@@ -128,20 +106,20 @@
   </div>
 
   <script>
-    // Flip clock display
+    // Digital clock display
     function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
+      var now = new Date();
+      var hours = now.getHours() < 10 ? '0' + now.getHours() : now.getHours();
+      var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
+      var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
 
-      // Set the values with flip animation
-      setFlipValue(document.getElementById('hours'), hours);
-      setFlipValue(document.getElementById('minutes'), minutes);
-      setFlipValue(document.getElementById('seconds'), seconds);
+      // Set the clock values
+      document.getElementById('hours').innerText = hours;
+      document.getElementById('minutes').innerText = minutes;
+      document.getElementById('seconds').innerText = seconds;
 
       // Update the date
-      const date = now.toLocaleDateString("en-US", {
+      var date = now.toLocaleDateString("en-US", {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
@@ -150,18 +128,8 @@
       document.getElementById('date').textContent = date;
     }
 
-    function setFlipValue(element, newValue) {
-      if (element.innerText !== newValue) {
-        element.innerText = newValue;
-        element.classList.add('flip-animation');
-        setTimeout(() => {
-          element.classList.remove('flip-animation');
-        }, 500);
-      }
-    }
-
     // Random motivational quote
-    const quotes = [
+    var quotes = [
       "The best time to plant a tree was 20 years ago. The second best time is now.",
       "You are never too old to set another goal or to dream a new dream.",
       "The future depends on what we do in the present.",
@@ -169,12 +137,12 @@
       "Believe you can and you're halfway there."
     ];
     function getRandomQuote() {
-      const randomIndex = Math.floor(Math.random() * quotes.length);
+      var randomIndex = Math.floor(Math.random() * quotes.length);
       document.getElementById('quote').textContent = quotes[randomIndex];
     }
 
-    // Update clock every 1.5 seconds for a smoother effect
-    setInterval(updateClock, 1500);
+    // Update clock every second
+    setInterval(updateClock, 1000);
     // Get a random quote
     getRandomQuote();
   </script>
