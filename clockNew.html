@@ -38,21 +38,20 @@
     .digital-clock {
       display: flex;
       gap: 10px;
-      font-size: 5em; /* Slightly smaller font size */
+      font-size: 5em;
       justify-content: center;
       align-items: center;
     }
 
     .time-unit {
       padding: 15px;
-      background-color: rgba(131, 124, 124, 0.22);
       border-radius: 10px;
       width: 100px;
       height: 130px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1em;
+      font-size: 1.5em;
       color: #ffffff;
     }
 
@@ -77,6 +76,14 @@
       font-style: italic;
       color: rgba(255, 255, 255, 0.8);
       font-family: 'Courier New', Courier, monospace;
+      width: 90%; /* Ensures that the quote is aligned with the clock */
+      word-wrap: break-word;
+    }
+
+    /* Spacing for AM/PM */
+    #am-pm {
+      font-size: 1.2em;
+      margin-left: 20px; /* Adjust this value for more/less space */
     }
 
   </style>
@@ -93,10 +100,11 @@
       <div class="time-unit" id="minutes"></div>
       <div class="colon">:</div>
       <div class="time-unit" id="seconds"></div>
+      <div id="am-pm"></div>
     </div>
 
     <!-- Weather widget -->
-    <a class="weatherwidget-io" href="https://forecast7.com/en/40d96n73d81/eastchester/?unit=us" data-label_1="EASTCHESTER" data-label_2="WEATHER" data-font="Verdana" data-icons="Climacons Animated" data-theme="dark">EASTCHESTER WEATHER</a>
+    <a class="weatherwidget-io" href="https://forecast7.com/en/40d96n73d81/eastchester/?unit=us" data-label_1="EASTCHESTER" data-label_2="NEW YORK" data-font="Verdana" data-icons="Climacons Animated" data-theme="dark" data-accent="rgba(131, 124, 124, 0.22)" data-suncolor="#fffd00" data-mooncolor="#747070" data-cloudfill="rgba(255, 255, 255, 0)" data-raincolor="#0099ff" >EASTCHESTER WEATHER</a>
     <script>
       !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
     </script>
@@ -109,14 +117,21 @@
     // Digital clock display
     function updateClock() {
       var now = new Date();
-      var hours = now.getHours() < 10 ? '0' + now.getHours() : now.getHours();
+      var hours = now.getHours();
       var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
       var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+
+      // Convert to 12-hour format and pad hours with leading zero for 1-9
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      hours = hours < 10 ? '0' + hours : hours; // Add leading zero for single digit hours
 
       // Set the clock values
       document.getElementById('hours').innerText = hours;
       document.getElementById('minutes').innerText = minutes;
       document.getElementById('seconds').innerText = seconds;
+      document.getElementById('am-pm').innerText = ampm;
 
       // Update the date
       var date = now.toLocaleDateString("en-US", {
@@ -126,19 +141,6 @@
         day: 'numeric'
       });
       document.getElementById('date').textContent = date;
-    }
-
-    // Random motivational quote
-    var quotes = [
-      "The best time to plant a tree was 20 years ago. The second best time is now.",
-      "You are never too old to set another goal or to dream a new dream.",
-      "The future depends on what we do in the present.",
-      "Don’t watch the clock; do what it does. Keep going.",
-      "Believe you can and you're halfway there."
-    ];
-    function getRandomQuote() {
-      var randomIndex = Math.floor(Math.random() * quotes.length);
-      document.getElementById('quote').textContent = quotes[randomIndex];
     }
 
     // Update clock every second
