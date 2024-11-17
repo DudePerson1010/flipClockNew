@@ -5,22 +5,108 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Digital Clock with Weather</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { width: 100%; height: 100%; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: black; }
-    .container { text-align: center; color: #fff; }
-    .date { font-size: 1.5em; margin-bottom: 10px; font-family: 'Georgia', serif; }
-    .digital-clock { display: flex; gap: 5px; font-size: 3.5em; justify-content: center; align-items: center; }
-    .time-unit { padding: 20px; border-radius: 10px; width: 100px; height: 130px; display: flex; justify-content: center; align-items: center; font-size: 1.5em; color: #ffffff; }
-    .colon { font-size: 1.2em; color: rgba(255, 255, 255, 0.8); display: flex; align-items: center; margin-right: -5px; }
-    #weather { margin-top: 50px; font-size: 5em; max-width: 1%; }
-    .weatherwidget-io { max-width: 500px; width: 100%; margin: 0 auto; }
-    .quote { padding-left: 300px; font-size: 1.5em; margin-top: 30px; font-style: italic; color: rgba(255, 255, 255, 0.8); font-family: 'Courier New', Courier, monospace; max-width: 70%; word-wrap: break-word; overflow-wrap: break-word; text-align: center; white-space: normal; }
-    #am-pm { font-size: 0.9em; margin-left: 20px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+    }
+
+    .container {
+      text-align: center;
+      color: #fff;
+    }
+
+    /* Date display */
+    .date {
+      font-size: 2em;
+      margin-bottom: 10px;
+      font-family: 'Georgia', serif;
+    }
+
+    /* Clock styles */
+    .digital-clock {
+      display: flex;
+      gap: 5px;
+      font-size: 3.5em;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .time-unit {
+      padding: 20px;
+      border-radius: 10px;
+      width: 100px;
+      height: 130px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5em;
+      color: #ffffff;
+    }
+
+    /* Colon style */
+    .colon {
+      font-size: 1.2em;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      margin-right: -15px; /* Adjust this value for the desired spacing */
+    }
+
+    /* Weather widget adjustments */
+    #weather {
+      margin-top: 50px;
+      font-size: 5em;
+      max-width: 1%;
+    }
+    .weatherwidget-io {
+      max-width: 500px; /* Adjust to your desired width */
+      width: 100%; /* Ensures it scales within the max-width */
+      margin: 0 auto; /* Centers the widget */
+    }
+    .quote {
+      padding-left: 215px; /* Adjust to move right; padding-right to move left */
+    }
+
+    /* Motivation quote style */
+    .quote {
+      font-size: 1.5em;
+      margin-top: 30px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.8);
+      font-family: 'Courier New', Courier, monospace;
+      max-width: 70%; /* Limits the quote's width */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      text-align: center;
+      overflow: hidden;
+      white-space: normal;
+    }
+
+    /* Spacing for AM/PM */
+    #am-pm {
+      font-size: 0.9em;
+      margin-left: 20px; /* Adjust this value for more/less space */
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Current Date -->
     <div class="date" id="date"></div>
+
+    <!-- Digital clock display -->
     <div class="digital-clock" id="clock">
       <div class="time-unit" id="hours"></div>
       <div class="colon">:</div>
@@ -29,34 +115,51 @@
       <div class="time-unit" id="seconds"></div>
       <div id="am-pm"></div>
     </div>
-    <a class="weatherwidget-io" href="https://forecast7.com/en/40d96n73d81/eastchester/?unit=us" data-label_1="EASTCHESTER" data-label_2="NEW YORK" data-font="Verdana" data-icons="Climacons Animated" data-theme="dark" data-accent="rgba(131, 124, 124, 0.22)" data-suncolor="#fffd00" data-mooncolor="#747070" data-cloudfill="rgba(255, 255, 255, 0)" data-raincolor="#0099ff">EASTCHESTER WEATHER</a>
+
+    <!-- Weather widget -->
+    <a class="weatherwidget-io" href="https://forecast7.com/en/40d96n73d81/eastchester/?unit=us" data-label_1="EASTCHESTER" data-label_2="NEW YORK" data-font="Verdana" data-icons="Climacons Animated" data-theme="dark" data-accent="rgba(131, 124, 124, 0.22)" data-suncolor="#fffd00" data-mooncolor="#747070" data-cloudfill="rgba(255, 255, 255, 0)" data-raincolor="#0099ff" >EASTCHESTER WEATHER</a>
     <script>
       !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
     </script>
+    
+    <!-- Random motivational quote -->
     <div class="quote" id="quote"></div>
   </div>
 
   <script>
+    // Digital clock display
     function updateClock() {
       var now = new Date();
       var hours = now.getHours();
       var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
       var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
       var ampm = hours >= 12 ? 'PM' : 'AM';
+
+      // Convert to 12-hour format and pad hours with leading zero for 1-9
       hours = hours % 12;
-      hours = hours ? hours : 12;
-      hours = hours < 10 ? '0' + hours : hours;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      hours = hours < 10 ? '0' + hours : hours; // Add leading zero for single digit hours
+
+      // Set the clock values
       document.getElementById('hours').innerText = hours;
       document.getElementById('minutes').innerText = minutes;
       document.getElementById('seconds').innerText = seconds;
       document.getElementById('am-pm').innerText = ampm;
-      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      var dateText = days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
-      document.getElementById('date').innerText = dateText;
+
+      // Update the date
+      var date = now.toLocaleDateString("en-US", {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      document.getElementById('date').textContent = date;
     }
+
+    // Update clock every second
     setInterval(updateClock, 1000);
 
+    // Random motivational quotes
     var quotes = [
       "Believe you can and you're halfway there.",
       "Your only limit is your mind.",
@@ -77,9 +180,25 @@
 
     function getRandomQuote() {
       var randomIndex = Math.floor(Math.random() * quotes.length);
-      document.getElementById('quote').innerText = quotes[randomIndex];
+      document.getElementById('quote').textContent = quotes[randomIndex];
     }
+
+    // Change quote every hour
+    function changeQuoteHourly() {
+      var now = new Date();
+      var lastCheckedHour = now.getHours();
+      setInterval(function() {
+        var currentHour = new Date().getHours();
+        if (currentHour !== lastCheckedHour) {
+          getRandomQuote(); // Change the quote when the hour changes
+          lastCheckedHour = currentHour;
+        }
+      }, 60000); // Check every minute to see if the hour has changed
+    }
+
+    // Display a new quote on load and start checking hourly
     getRandomQuote();
+    changeQuoteHourly();
   </script>
 </body>
 </html>
