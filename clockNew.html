@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital Clock with Local Image Background</title>
+  <title>Clock with DaysPedia and Weather Widget</title>
   <style>
     * {
       margin: 0;
@@ -12,19 +12,16 @@
     }
 
     body, html {
-      background-image: url('https://4kwallpapers.com/images/wallpapers/green-forest-trees-aerial-view-body-of-water-turquoise-1920x1200-5002.jpg');
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e6/Classic_view_of_Acropolis.jpg');
       background-size: cover;
       background-position: center;
       height: 100vh;
-      margin: 0;
       width: 100%;
-      height: 100%;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: black;
     }
 
     .container {
@@ -33,106 +30,102 @@
       z-index: 1;
     }
 
-    /* Date display */
-    .date {
-      font-size: 3em;
-      margin-bottom: 20px;
-      color: rgb(255, 255, 255);
-      font-family: 'arail';
+    iframe {
+      display: block;
+      margin: 90 auto;
+      border: none;
+      background: transparent;
     }
 
-    /* Clock styles */
-    .digital-clock {
-      display: flex;
-      gap: 10px;
-      font-size: 8em;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Arial', sans-serif;
-    }
-
-    .time-unit {
-      padding: 10px;
-      border-radius: 10px;
-      width: 150px;
-      height: 200px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.5em;
-      color: #ffffff;
-    }
-
-    /* Colon style */
-    .colon {
-      font-size: 1.5em;
-      color: rgba(255, 255, 255, 0.904);
-      display: flex;
-      padding-left: 70px;
-      align-items: center;
-    }
-
-    /* Weather widget adjustments */
     .weatherwidget-io {
-      width: 900px; /* Extended width */
+      width: 600px;
     }
+
+    .clock {
+      font-size: 96px;
+      color: rgb(255, 255, 255);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Transparent black */
+      z-index: 0; /* Ensures it's under the widgets */
+    }
+
   </style>
 </head>
 <body>
-  <!-- Image Background -->
-  <div id="image-background"></div>
-
+  <div class="overlay"></div>
   <div class="container">
-    <!-- Current Date -->
-    <div class="date" id="date"></div>
+    <!-- DaysPedia Widget -->
+    <div class="DPDC" cityid="17240" lang="en" id="dayspedia_widget_5111960492dd92fe" host="https://dayspedia.com" ampm="true" nightsign="true" sun="true" style="background-color: initial; background-image: none; width: 100%; padding: 48px; border-width: 0px;">
+      <style media="screen" id="dayspedia_widget_5111960492dd92fe_style">
+        /*COMMON*/
+        .DPDC{display:table;position:relative;box-sizing:border-box;font-size:100.01%;font-style:normal;font-family:Arial;background-position:50% 50%;background-repeat:no-repeat;background-size:cover;overflow:hidden;user-select:none}
+        .DPDCh,.DPDCd{width:fit-content;line-height:1.4}
+        .DPDCh{margin-bottom:1em}
+        .DPDCd{margin-top:.24em}
+        .DPDCt{line-height:1}
+        .DPDCth,.DPDCtm,.DPDCts{display:inline-block;vertical-align:text-top;white-space:nowrap}
+        .DPDCth{min-width:0.6em;text-align:right}
+        .DPDCtm,.DPDCts{min-width:1.44em}
+        .DPDCtm::before,.DPDCts::before{display:inline-block;content:':';vertical-align:middle;margin:-.34em 0 0 -.07em;width:.32em;text-align:center;opacity:.72;filter:alpha(opacity=72)}
+        .DPDCt12{display:inline-block;vertical-align:baseline;top:-0.12em;position:relative;font-size:40%}
+        .DPDCdm::after{content:' '};
+        .DPDCda::after{content:', '};
+        .DPDCdt{margin-right:.48em};
+        .DPDCtn{display:inline-block;position:relative;width:13px;height:13px;border:2px solid;border-radius:50%;overflow:hidden}
+        .DPDCtn>i{display:block;content:'';position:absolute;right:33%;top:-5%;width:85%;height:85%;border-radius:50%}
+        .DPDCs{margin:.96em 0 0 -3px;font-size:90%;line-height:1;white-space:nowrap}
+        .DPDCs sup{padding-left:.24em;font-size:65%}
+        .DPDCsl::before,.DPDCsl::after{display:inline-block;opacity:.4}
+        .DPDCsl::before{content:'~';margin:0 .12em}
+        .DPDCsl::after{content:'~';margin:0 .24em}
+        .DPDCs svg{display:inline-block;vertical-align:bottom;width:1.2em;height:1.2em;opacity:.48}
+        /*CUSTOM*/
+        .DPDC{width:auto;padding:24px;background-color:#ffffff;border:1px solid #343434;border-radius:8px} /* widget width, padding, background, border, rounded corners */
+        .DPDCh{color:#007DBF;font-weight:normal} /* headline color, font-weight*/
+        .DPDCt,.DPDCd{color:#343434;font-weight:bold} /* time & date color, font-weight */
+        .DPDCtn{border-color:#343434} /* night-sign color = time & date color */
+        .DPDCtn>i{background-color:#343434} /* night-sign color = time & date color */
+        .DPDCt{font-size:48px} /* time font-size */
+        .DPDCh,.DPDCd{font-size:16px} /* headline & date font-size */
+      </style>
 
-    <!-- Digital clock display -->
-    <div class="digital-clock" id="clock">
-      <div class="time-unit" id="hours"></div>
-      <div class="colon">:</div>
-      <div class="time-unit" id="minutes"></div>
-      <div class="colon">:</div>
-      <div class="time-unit" id="seconds"></div>
+      <div class="DPDCh" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 32px; display: none;"></div>
+      <div class="DPDCt" id="current-time" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 96px; color: rgb(255, 255, 255);">
+        <!-- Dynamic time will be injected here -->
+      </div>
+      <div class="DPDCd" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 32px; color: rgb(255, 255, 255);">
+        <span class="DPDCdt">Sun, December 22</span><span class="DPDCtn" style="display: none; width: 27px; height: 27px; border-color: rgb(255, 255, 255);"><i style="background-color: rgb(255, 255, 255);"></i></span>
+      </div>
     </div>
-
-    <!-- Weather widget -->
-    <a class="weatherwidget-io" href="https://forecast7.com/en/40d95n73d81/10709/?unit=us" data-font="Arial Black" data-icons="Climacons Animated" data-theme="dark" data-basecolor="rgba(0, 0, 0, 0)" data-shadow="#000000" data-textcolor="#ffffff" data-highcolor="#ffe2e2" data-lowcolor="#b9edff" data-suncolor="#eeff00" data-mooncolor="#383737" data-cloudfill="#ffffff" data-raincolor="#0099ff" data-snowcolor="#dedede" >Eastchester, NY 10709, USA</a>
+    <!-- Weather Widget -->
+    <a class="weatherwidget-io" href="https://forecast7.com/en/40d95n73d81/10709/?unit=us" data-font="Arial Black" data-icons="Climacons Animated" data-theme="original" data-basecolor="rgba(31, 86, 124, 0)" data-shadow="rgba(0, 0, 0, 1)" data-highcolor="#ffcece" data-lowcolor="#c6ddff" data-suncolor="#fffd00" data-mooncolor="#494949" data-cloudcolor="#ffffff" data-cloudfill="#ffffff" data-raincolor="#0080e8" data-snowcolor="#dcdcdc">Eastchester, NY 10709, USA</a>
     <script>
       !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+      
+      function updateTime() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;  // Convert 24-hour to 12-hour format
+        const displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+        const displaySeconds = seconds < 10 ? '0' + seconds : seconds;
+        const timeString = `${displayHours}:${displayMinutes}:${displaySeconds} ${ampm}`;
+        
+        document.getElementById('current-time').textContent = timeString;
+      }
+
+      setInterval(updateTime, 1000); // Update the time every second
+      updateTime(); // Call immediately to display the time without waiting
     </script>
   </div>
-
-  <script>
-    // Digital clock display
-    function updateClock() {
-      var now = new Date();
-      var hours = now.getHours();
-      var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
-      var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
-
-      // Convert to 12-hour format and pad hours with leading zero for 1-9
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-
-      // Set the clock values
-      document.getElementById('hours').innerText = hours;
-      document.getElementById('minutes').innerText = minutes;
-      document.getElementById('seconds').innerText = seconds;
-
-      // Update the date
-      var date = now.toLocaleDateString("en-US", {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-      document.getElementById('date').textContent = date;
-    }
-
-    // Update clock every second
-    setInterval(updateClock, 1000);
-
-    // Initialize the clock on page load
-    updateClock();
-  </script>
 </body>
 </html>
