@@ -12,7 +12,7 @@
     }
 
     body, html {
-      background-image: url('https://plus.unsplash.com/premium_photo-1661964068107-6d7f6f4fea51?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWNyb3BvbGlzfGVufDB8fDB8fHww');
+      background-image: url('https://wallpapercave.com/wp/wp3990900.jpg');
       background-size: cover;
       background-position: center;
       height: 100vh;
@@ -101,7 +101,7 @@
         <!-- Dynamic time will be injected here -->
       </div>
       <div class="DPDCd" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 32px; color: rgb(255, 255, 255);">
-        <span class="DPDCdt">Sun, December 22</span><span class="DPDCtn" style="display: none; width: 27px; height: 27px; border-color: rgb(255, 255, 255);"><i style="background-color: rgb(255, 255, 255);"></i></span>
+        <span class="DPDCdt"></span>
       </div>
     </div>
     <!-- Weather Widget -->
@@ -110,21 +110,35 @@
       !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
       
       function updateTime() {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const displayHours = hours % 12 || 12;  // Convert 24-hour to 12-hour format
-        const displayMinutes = minutes < 10 ? '0' + minutes : minutes;
-        const displaySeconds = seconds < 10 ? '0' + seconds : seconds;
-        const timeString = `${displayHours}:${displayMinutes}:${displaySeconds} ${ampm}`;
-        
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        var displayHours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+        var displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+        var displaySeconds = seconds < 10 ? '0' + seconds : seconds;
+        var formattedHours = displayHours < 10 ? '0' + displayHours : displayHours;
+        var timeString = `${formattedHours}:${displayMinutes}:${displaySeconds} ${ampm}`;
+
         document.getElementById('current-time').textContent = timeString;
+      }
+
+      function updateDate() {
+        var now = new Date();
+        var options = { weekday: 'short', month: 'long', day: 'numeric' };
+        var dateString = now.toLocaleDateString('en-US', options); // Formats like 'Sun, December 22'
+        
+        document.querySelector('.DPDCdt').textContent = dateString; // Update the date text
       }
 
       setInterval(updateTime, 1000); // Update the time every second
       updateTime(); // Call immediately to display the time without waiting
+      updateDate(); // Call immediately to display the date
+
+      setInterval(() => {
+        location.reload();
+      }, 3600000); // 3600000ms = 1 hour
     </script>
   </div>
 </body>
