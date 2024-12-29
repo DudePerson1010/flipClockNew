@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clock with DaysPedia and Weather Widget</title>
+  <title>Clock with Weather Widget</title>
   <style>
     * {
       margin: 0;
@@ -22,6 +22,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      font-family: Arial, sans-serif;
     }
 
     .container {
@@ -30,20 +31,16 @@
       z-index: 1;
     }
 
-    iframe {
-      display: block;
-      margin: 90 auto;
-      border: none;
-      background: transparent;
-    }
-
-    .weatherwidget-io {
-      width: 600px;
-    }
-
     .clock {
       font-size: 96px;
-      color: rgb(255, 255, 255);
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .date {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 24px;
     }
 
     .overlay {
@@ -52,63 +49,43 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Transparent black */
-      z-index: 0; /* Ensures it's under the widgets */
+      background-color: rgba(0, 0, 0, 0.7); /* Transparent black */
+      z-index: 0;
     }
 
+    .weatherwidget-io {
+      margin-top: 16px;
+    }
   </style>
 </head>
 <body>
   <div class="overlay"></div>
   <div class="container">
-    <!-- DaysPedia Widget -->
-    <div class="DPDC" cityid="17240" lang="en" id="dayspedia_widget_5111960492dd92fe" host="https://dayspedia.com" ampm="true" nightsign="true" sun="true" style="background-color: initial; background-image: none; width: 100%; padding: 48px; border-width: 0px;">
-      <style media="screen" id="dayspedia_widget_5111960492dd92fe_style">
-        /*COMMON*/
-        .DPDC{display:table;position:relative;box-sizing:border-box;font-size:100.01%;font-style:normal;font-family:Arial;background-position:50% 50%;background-repeat:no-repeat;background-size:cover;overflow:hidden;user-select:none}
-        .DPDCh,.DPDCd{width:fit-content;line-height:1.4}
-        .DPDCh{margin-bottom:1em}
-        .DPDCd{margin-top:.24em}
-        .DPDCt{line-height:1}
-        .DPDCth,.DPDCtm,.DPDCts{display:inline-block;vertical-align:text-top;white-space:nowrap}
-        .DPDCth{min-width:0.6em;text-align:right}
-        .DPDCtm,.DPDCts{min-width:1.44em}
-        .DPDCtm::before,.DPDCts::before{display:inline-block;content:':';vertical-align:middle;margin:-.34em 0 0 -.07em;width:.32em;text-align:center;opacity:.72;filter:alpha(opacity=72)}
-        .DPDCt12{display:inline-block;vertical-align:baseline;top:-0.12em;position:relative;font-size:40%}
-        .DPDCdm::after{content:' '};
-        .DPDCda::after{content:', '};
-        .DPDCdt{margin-right:.48em};
-        .DPDCtn{display:inline-block;position:relative;width:13px;height:13px;border:2px solid;border-radius:50%;overflow:hidden}
-        .DPDCtn>i{display:block;content:'';position:absolute;right:33%;top:-5%;width:85%;height:85%;border-radius:50%}
-        .DPDCs{margin:.96em 0 0 -3px;font-size:90%;line-height:1;white-space:nowrap}
-        .DPDCs sup{padding-left:.24em;font-size:65%}
-        .DPDCsl::before,.DPDCsl::after{display:inline-block;opacity:.4}
-        .DPDCsl::before{content:'~';margin:0 .12em}
-        .DPDCsl::after{content:'~';margin:0 .24em}
-        .DPDCs svg{display:inline-block;vertical-align:bottom;width:1.2em;height:1.2em;opacity:.48}
-        /*CUSTOM*/
-        .DPDC{width:auto;padding:24px;background-color:#ffffff;border:1px solid #343434;border-radius:8px} /* widget width, padding, background, border, rounded corners */
-        .DPDCh{color:#007DBF;font-weight:normal} /* headline color, font-weight*/
-        .DPDCt,.DPDCd{color:#343434;font-weight:bold} /* time & date color, font-weight */
-        .DPDCtn{border-color:#343434} /* night-sign color = time & date color */
-        .DPDCtn>i{background-color:#343434} /* night-sign color = time & date color */
-        .DPDCt{font-size:48px} /* time font-size */
-        .DPDCh,.DPDCd{font-size:16px} /* headline & date font-size */
-      </style>
-
-      <div class="DPDCh" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 32px; display: none;"></div>
-      <div class="DPDCt" id="current-time" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 96px; color: rgb(255, 255, 255);">
-        <!-- Dynamic time will be injected here -->
-      </div>
-      <div class="DPDCd" style="text-align: center; margin-left: auto; margin-right: auto; font-size: 32px; color: rgb(255, 255, 255);">
-        <span class="DPDCdt"></span>
-      </div>
-    </div>
+    <!-- Time and Date -->
+    <div id="current-time" class="clock">Loading time...</div>
+    <div id="current-date" class="date">Loading date...</div>
+    
     <!-- Weather Widget -->
-    <a class="weatherwidget-io" href="https://forecast7.com/en/40d95n73d81/10709/?unit=us" data-font="Arial Black" data-icons="Climacons Animated" data-theme="original" data-basecolor="rgba(31, 86, 124, 0)" data-shadow="rgba(0, 0, 0, 1)" data-highcolor="#ffcece" data-lowcolor="#c6ddff" data-suncolor="#fffd00" data-mooncolor="#494949" data-cloudcolor="#ffffff" data-cloudfill="#ffffff" data-raincolor="#0080e8" data-snowcolor="#dcdcdc">Eastchester, NY 10709, USA</a>
+    <a class="weatherwidget-io" href="https://forecast7.com/en/40d95n73d81/10709/?unit=us" 
+       data-font="Arial Black" data-icons="Climacons Animated" data-theme="original" 
+       data-basecolor="rgba(0, 0, 0, 0)" data-accent="rgba(255, 255, 255, 0)" 
+       data-suncolor="#ffeb00" data-mooncolor="#717171" data-cloudcolor="#ffffff" 
+       data-cloudfill="#ffffff" data-raincolor="#146be7">
+      Eastchester, NY 10709, USA
+    </a>
+    
     <script>
-      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-      
+      !function(d,s,id){
+        var js,fjs=d.getElementsByTagName(s)[0];
+        if(!d.getElementById(id)){
+          js=d.createElement(s);
+          js.id=id;
+          js.src='https://weatherwidget.io/js/widget.min.js';
+          fjs.parentNode.insertBefore(js,fjs);
+        }
+      }(document,'script','weatherwidget-io-js');
+
+      // Update time and date
       function updateTime() {
         var now = new Date();
         var hours = now.getHours();
@@ -118,27 +95,29 @@
         var displayHours = hours % 12 || 12; // Convert 24-hour to 12-hour format
         var displayMinutes = minutes < 10 ? '0' + minutes : minutes;
         var displaySeconds = seconds < 10 ? '0' + seconds : seconds;
-        var formattedHours = displayHours < 10 ? '0' + displayHours : displayHours;
-        var timeString = `${formattedHours}:${displayMinutes}:${displaySeconds} ${ampm}`;
-
+        var timeString = (displayHours < 10 ? '0' : '') + displayHours + ':' + displayMinutes + ':' + displaySeconds + ' ' + ampm;
         document.getElementById('current-time').textContent = timeString;
       }
 
       function updateDate() {
         var now = new Date();
-        var options = { weekday: 'short', month: 'long', day: 'numeric' };
-        var dateString = now.toLocaleDateString('en-US', options); // Formats like 'Sun, December 22'
-        
-        document.querySelector('.DPDCdt').textContent = dateString; // Update the date text
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var day = days[now.getDay()];
+        var date = now.getDate();
+        var month = months[now.getMonth()];
+        var year = now.getFullYear();
+        var dateString = day + ', ' + month + ' ' + date + ', ' + year;
+        document.getElementById('current-date').textContent = dateString;
       }
 
-      setInterval(updateTime, 1000); // Update the time every second
-      updateTime(); // Call immediately to display the time without waiting
-      updateDate(); // Call immediately to display the date
+      setInterval(updateTime, 1000); // Update time every second
+      updateTime(); // Call once immediately
+      updateDate(); // Call once immediately
 
-      setInterval(() => {
-        location.reload();
-      }, 3600000); // 3600000ms = 1 hour
+      setInterval(function() {
+        location.reload(); // Reload every hour to avoid potential memory issues
+      }, 3600000);
     </script>
   </div>
 </body>
